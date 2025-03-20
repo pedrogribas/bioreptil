@@ -1,20 +1,20 @@
-import React from "react";
 import {
+  Box,
   Card,
   CardContent,
   CardMedia,
-  Typography,
-  Box,
   Tooltip,
+  Typography,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Conservacao,
   Habitat,
   PeriodoAtividade,
   Reptil,
 } from "../types/reptile";
-import { useNavigate } from "react-router-dom";
 
 interface ReptileCardProps {
   reptile: Reptil;
@@ -22,21 +22,20 @@ interface ReptileCardProps {
 
 // Styled components
 const StyledCard = styled(Card)(({ theme }) => ({
-  maxWidth: 300,
-  margin: theme.spacing(1),
-  backgroundColor: "#fff",
+  width: 300,
+  backgroundColor: theme.palette.background.paper,
   borderRadius: 8,
   transition: "transform 0.3s ease",
   "&:hover": {
     transform: "scale(1.03)",
   },
-  border: "1px solid #e0e0e0",
+  border: `1px solid ${theme.palette.divider}`,
   overflow: "hidden",
 }));
 
 const CardHeader = styled(Box)(({ theme }) => ({
-  backgroundColor: "#4caf50",
-  color: "#fff",
+  backgroundColor: theme.palette.primary.main,
+  color: theme.palette.primary.contrastText,
   padding: theme.spacing(1, 2),
   display: "flex",
   justifyContent: "space-between",
@@ -47,7 +46,7 @@ const IconsContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   justifyContent: "space-around",
   padding: theme.spacing(1, 0),
-  borderTop: "1px solid #e0e0e0",
+  borderTop: `1px solid ${theme.palette.divider}`,
   marginTop: theme.spacing(1),
 }));
 
@@ -77,7 +76,6 @@ const ReptileCard: React.FC<ReptileCardProps> = ({ reptile }) => {
 
   // Helper function to get icon paths
   const getConservacaoIcon = (status: Conservacao) => {
-    // Replace with your actual icon paths
     switch (status) {
       case "POUCO PREOCUPANTE":
         return "src/assets/images/Icons/pouco-preocupante.png";
@@ -99,11 +97,10 @@ const ReptileCard: React.FC<ReptileCardProps> = ({ reptile }) => {
   const getPeriodoAtividadeIcon = (periodo: PeriodoAtividade) => {
     return periodo === "Diurno"
       ? "src/assets/images/Icons/diurno.png"
-      : "src/assets/images/Icons/noturno.png"
+      : "src/assets/images/Icons/noturno.png";
   };
 
   const getHabitatIcon = (hab: Habitat) => {
-    // Replace with your actual icon paths
     switch (hab) {
       case "Solo":
         return "src/assets/images/Icons/solo.png";
@@ -117,10 +114,13 @@ const ReptileCard: React.FC<ReptileCardProps> = ({ reptile }) => {
         return null;
     }
   };
+
   const navigate = useNavigate();
   return (
-    <StyledCard elevation={3} onClick={()=>
-      navigate(`/reptileDetails/${reptile.id}`)}>
+    <StyledCard
+      elevation={3}
+      onClick={() => navigate(`/reptile/${reptile.id}`)}
+    >
       <CardHeader>
         <Typography
           variant="subtitle1"
@@ -136,7 +136,7 @@ const ReptileCard: React.FC<ReptileCardProps> = ({ reptile }) => {
         component="img"
         image={`src/assets/images/Reptiles/${imagemPrincipal}.jpg`}
         alt={nomePopular}
-        sx={{ objectFit: "cover" , height:160}}
+        sx={{ objectFit: "fill", height: 160 }}
       />
 
       <CardContent sx={{ pb: 1 }}>
@@ -165,11 +165,10 @@ const ReptileCard: React.FC<ReptileCardProps> = ({ reptile }) => {
           {/* Conservação */}
           <Tooltip title={`Conservação: ${conservacao}`}>
             <IconWrapper>
-                <IconImage
-                  src={getConservacaoIcon(conservacao)??''}
-                  alt={conservacao}
-                />
-
+              <IconImage
+                src={getConservacaoIcon(conservacao) ?? ""}
+                alt={conservacao}
+              />
             </IconWrapper>
           </Tooltip>
 
@@ -183,11 +182,14 @@ const ReptileCard: React.FC<ReptileCardProps> = ({ reptile }) => {
             </IconWrapper>
           </Tooltip>
 
-          {/* Habitat - Mostra apenas o primeiro habitat para economizar espaço */}
+          {/* Habitat */}
           {habitat.length > 0 && (
             <Tooltip title={`Habitat: ${habitat.join(", ")}`}>
               <IconWrapper>
-                <IconImage src={getHabitatIcon(habitat[0])??''} alt={habitat[0]} />
+                <IconImage
+                  src={getHabitatIcon(habitat[0]) ?? ""}
+                  alt={habitat[0]}
+                />
               </IconWrapper>
             </Tooltip>
           )}

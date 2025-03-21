@@ -5,8 +5,8 @@ import ReptileDetail from "../screens/ReptileDetail";
 const AppRoutes = () => {
   return (
     <Routes>
+      <Route path="/reptile" element={<ReptileDetail />} />
       <Route path="/" element={<Home />} />
-      <Route path="/reptile/:id" element={<ReptileDetail />} />
     </Routes>
   );
 };

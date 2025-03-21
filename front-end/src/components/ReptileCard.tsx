@@ -65,6 +65,7 @@ const IconImage = styled("img")({
 
 const ReptileCard: React.FC<ReptileCardProps> = ({ reptile }) => {
   const {
+    id,
     nomePopular,
     nomeCientifico,
     imagemPrincipal,
@@ -119,7 +120,7 @@ const ReptileCard: React.FC<ReptileCardProps> = ({ reptile }) => {
   return (
     <StyledCard
       elevation={3}
-      onClick={() => navigate(`/reptile/${reptile.id}`)}
+      onClick={() => navigate(`/reptile`, { state: { id } })}
     >
       <CardHeader>
         <Typography

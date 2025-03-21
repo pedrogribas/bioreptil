@@ -18,7 +18,7 @@ const Footer: React.FC = () => {
           align="center"
           color="primary.light" // Usa a cor clara do tema
         >
-          © 2024 BioReptil - Glossário Digital de Répteis. Projeto Acadêmico.
+          © 2025 BioReptil - Glossário Digital de Répteis. Projeto Acadêmico.
         </Typography>
       </Container>
     </Box>

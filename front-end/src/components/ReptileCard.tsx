@@ -150,17 +150,17 @@ const ReptileCard: React.FC<ReptileCardProps> = ({ reptile }) => {
         </Typography>
 
         <IconsContainer>
-          {/* Período de atividade */}
-          {periodoAtividade.map((periodo, index) => (
-            <Tooltip key={`periodo-${index}`} title={periodo}>
+          {/* Período de atividade - Exibe primeiro item do array */}
+          {periodoAtividade.length > 0 && (
+            <Tooltip title={`Período: ${periodoAtividade.join(", ")}`}>
               <IconWrapper>
                 <IconImage
-                  src={getPeriodoAtividadeIcon(periodo)}
-                  alt={periodo}
+                  src={getPeriodoAtividadeIcon(periodoAtividade[0])}
+                  alt={periodoAtividade[0]}
                 />
               </IconWrapper>
             </Tooltip>
-          ))}
+          )}
 
           {/* Conservação */}
           <Tooltip title={`Conservação: ${conservacao}`}>
@@ -182,7 +182,7 @@ const ReptileCard: React.FC<ReptileCardProps> = ({ reptile }) => {
             </IconWrapper>
           </Tooltip>
 
-          {/* Habitat */}
+          {/* Habitat - Exibe primeiro item do array */}
           {habitat.length > 0 && (
             <Tooltip title={`Habitat: ${habitat.join(", ")}`}>
               <IconWrapper>

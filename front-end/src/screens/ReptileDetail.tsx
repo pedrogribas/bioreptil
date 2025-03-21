@@ -18,10 +18,10 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { getRepteis } from "../api";
 import { Reptil } from "../types/reptile";
-import { repteis } from "./../data/reptiles"; // Simulação de dados
 
 const ReptileDetail: React.FC = () => {
   const location = useLocation();
@@ -29,13 +29,29 @@ const ReptileDetail: React.FC = () => {
   const navigate = useNavigate();
   const theme = useTheme(); // Acessando o tema
   const isMobile = useMediaQuery(theme.breakpoints.down("sm")); // Detectando se é um dispositivo móvel
-
+  const [repteis, setRepteis] = useState<Reptil[]>([]);
+  const [loading, setLoading] = useState(true);
   const reptile: Reptil | undefined = repteis.find((r) => r.id === Number(id));
 
   useEffect(() => {
-    console.log("dados dos repteis", reptile);
-    console.log("imagem principal", reptile?.imagemPrincipal);
-  }, [reptile]);
+    setLoading(true);
+    const fetchData = async () => {
+      try {
+        // Buscar todos os répteis
+        const data = await getRepteis();
+        setRepteis(data);
+      } catch (error) {
+        console.error("Erro ao buscar dados:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return <Typography>Carregando</Typography>;
+  }
 
   if (!reptile) {
     return (
@@ -70,7 +86,7 @@ const ReptileDetail: React.FC = () => {
         sx={{
           mt: 2,
           borderRadius: 2, // Bordas arredondadas
-          boxShaadow: 3,
+          boxShadow: 3, // Corrigido o nome da propriedade de "boxShaadow" para "boxShadow"
           overflow: "hidden", // Esconde qualquer overflow de imagem
           backgroundColor: theme.palette.background.paper,
         }}
@@ -115,15 +131,17 @@ const ReptileDetail: React.FC = () => {
                 <Typography variant="subtitle1" color="text.primary">
                   <strong>Habitat:</strong>
                 </Typography>
-                {reptile.habitat.map((h, idx) => (
-                  <Chip
-                    key={idx}
-                    label={h}
-                    color="primary"
-                    size="small"
-                    sx={{ borderRadius: 10 }}
-                  />
-                ))}
+                <Box display="flex" flexWrap="wrap" gap={0.5}>
+                  {reptile.habitat.map((h, idx) => (
+                    <Chip
+                      key={idx}
+                      label={h}
+                      color="primary"
+                      size="small"
+                      sx={{ borderRadius: 10 }}
+                    />
+                  ))}
+                </Box>
               </Box>
             </Grid>
 
@@ -133,15 +151,17 @@ const ReptileDetail: React.FC = () => {
                 <Typography variant="subtitle1" color="text.primary">
                   <strong>Período de Atividade:</strong>
                 </Typography>
-                {reptile.periodoAtividade.map((p, idx) => (
-                  <Chip
-                    key={idx}
-                    label={p}
-                    color="secondary"
-                    size="small"
-                    sx={{ borderRadius: 10 }}
-                  />
-                ))}
+                <Box display="flex" flexWrap="wrap" gap={0.5}>
+                  {reptile.periodoAtividade.map((p, idx) => (
+                    <Chip
+                      key={idx}
+                      label={p}
+                      color="secondary"
+                      size="small"
+                      sx={{ borderRadius: 10 }}
+                    />
+                  ))}
+                </Box>
               </Box>
             </Grid>
 
@@ -169,17 +189,43 @@ const ReptileDetail: React.FC = () => {
                 <Typography variant="subtitle1" color="text.primary">
                   <strong>Dieta:</strong>
                 </Typography>
-                {reptile.dieta.map((d, idx) => (
-                  <Chip
-                    key={idx}
-                    label={d}
-                    color="default"
-                    size="small"
-                    sx={{ borderRadius: 10 }}
-                  />
-                ))}
+                <Box display="flex" flexWrap="wrap" gap={0.5}>
+                  {reptile.dieta.map((d, idx) => (
+                    <Chip
+                      key={idx}
+                      label={d}
+                      color="default"
+                      size="small"
+                      sx={{ borderRadius: 10 }}
+                    />
+                  ))}
+                </Box>
               </Box>
             </Grid>
+            <Box
+              sx={{
+                marginLeft: 2,
+              }}
+            >
+              <Grid item xs={12}>
+                <Box mt={2} width={400}>
+                  <Typography variant="h6" gutterBottom>
+                    Distribuição
+                  </Typography>
+                  <CardMedia
+                    component="img"
+                    image={`src/public/assets/images/Reptiles/${reptile.imagemContinente}.png`}
+                    height="500"
+                    alt={`Distribuição de ${reptile.nomePopular}`}
+                    sx={{
+                      borderRadius: 16,
+                      objectFit: "contain",
+                      backgroundColor: "#f5f5f5",
+                    }}
+                  />
+                </Box>
+              </Grid>
+            </Box>
           </Grid>
         </CardContent>
       </Card>

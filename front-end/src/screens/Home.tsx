@@ -2,6 +2,7 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import React, { useEffect, useState } from "react";
 import { getRepteis } from "../api";
+import Filters from "../components/Filters";
 import ReptileCard from "../components/ReptileCard";
 import {
   Conservacao,
@@ -10,23 +11,30 @@ import {
   PeriodoAtividade,
   Reptil,
 } from "../types/reptile";
-import Filters from "./../components/Filters";
-import { repteis } from "../data/reptiles";
 
 const Home: React.FC = () => {
   const theme = useTheme(); // Acessando o tema
-  const [filteredrepteiss, setFilteredrepteiss] = useState<Reptil[]>();
+  const [repteis, setRepteis] = useState<Reptil[]>([]);
+  const [filteredRepteis, setFilteredRepteis] = useState<Reptil[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Buscar todos os répteis
-        const data = await getRepteis();
-        setFilteredrepteiss(data);
+        // Espera 5 segundos antes de buscar os dados
+        setLoading(true);
+        setTimeout(async () => {
+          const data = await getRepteis();
+          console.log("Dados da API:", data); // <-- Verifique aqui
+          setRepteis(data);
+          setFilteredRepteis(data);
+          setLoading(false); // Após o delay, define o loading como false
+        }, 50); // 5000ms = 5 segundos
       } catch (error) {
         console.error("Erro ao buscar dados:", error);
       }
     };
+
     fetchData();
   }, []);
 
@@ -39,67 +47,54 @@ const Home: React.FC = () => {
     searchQuery: "",
   });
 
-  const filterrepteiss = () => {
+  useEffect(() => {
     let filtered = repteis;
 
-    // Filtros de pesquisa por nome popular e científico
     if (selectedFilters.searchQuery) {
       filtered = filtered.filter(
-        (repteis) =>
-          repteis.nomePopular
+        (reptil) =>
+          reptil.nomePopular
             .toLowerCase()
             .includes(selectedFilters.searchQuery.toLowerCase()) ||
-          repteis.nomeCientifico
+          reptil.nomeCientifico
             .toLowerCase()
             .includes(selectedFilters.searchQuery.toLowerCase())
       );
     }
 
-    // Filtros de dieta
     if (selectedFilters.dieta.length > 0) {
-      filtered = filtered.filter((repteis) =>
-        selectedFilters.dieta.every((diet) =>
-          repteis.dieta.includes(diet as Dieta)
-        )
+      filtered = filtered.filter((reptil) =>
+        selectedFilters.dieta.every((diet) => reptil.dieta.includes(diet))
       );
     }
 
-    // Filtros de habitat
     if (selectedFilters.habitat.length > 0) {
-      filtered = filtered.filter((repteis) =>
-        selectedFilters.habitat.every((hab) => repteis.habitat.includes(hab))
+      filtered = filtered.filter((reptil) =>
+        selectedFilters.habitat.every((hab) => reptil.habitat.includes(hab))
       );
     }
 
-    // Filtros de período de atividade
     if (selectedFilters.periodoAtividade.length > 0) {
-      filtered = filtered.filter((repteis) =>
+      filtered = filtered.filter((reptil) =>
         selectedFilters.periodoAtividade.every((period) =>
-          repteis.periodoAtividade.includes(period)
+          reptil.periodoAtividade.includes(period)
         )
       );
     }
 
-    // Filtros de conservação
     if (selectedFilters.conservacao.length > 0) {
-      filtered = filtered.filter((repteis) =>
-        selectedFilters.conservacao.includes(repteis.conservacao)
+      filtered = filtered.filter((reptil) =>
+        selectedFilters.conservacao.includes(reptil.conservacao)
       );
     }
 
-    // Filtros de naturalidade
     if (selectedFilters.naturalidade.length > 0) {
-      filtered = filtered.filter((repteis) =>
-        selectedFilters.naturalidade.includes(repteis.naturalidade)
+      filtered = filtered.filter((reptil) =>
+        selectedFilters.naturalidade.includes(reptil.naturalidade)
       );
     }
-
-    setFilteredrepteiss(filtered);
-  };
-
-  useEffect(() => {
-    filterrepteiss();
-  }, [selectedFilters]);
+    setFilteredRepteis(filtered);
+  }, [repteis, selectedFilters]);
 
   const handleFilterChange = (category: string, value: string) => {
     setSelectedFilters((prevFilters) => {
@@ -155,6 +150,10 @@ const Home: React.FC = () => {
     return filters.length > 0 ? filters.join(" | ") : "Todos os Répteis";
   };
 
+  if (loading) {
+    return <Typography>Carregando...</Typography>;
+  }
+
   return (
     <Box
       sx={{
@@ -202,7 +201,7 @@ const Home: React.FC = () => {
               variant="h5"
               sx={{ mb: 2, textAlign: "center", fontWeight: "bold" }}
             >
-              {generateFilterString()} ({filteredrepteiss.length})
+              {generateFilterString()} ({filteredRepteis.length})
             </Typography>
             <Box
               sx={{
@@ -212,17 +211,21 @@ const Home: React.FC = () => {
                 gap: 2,
               }}
             >
-              {filteredrepteiss.map((repteis) => (
-                <Box
-                  key={repteis.id}
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                >
-                  <ReptileCard reptile={repteis} />
-                </Box>
-              ))}
+              {filteredRepteis.map((reptil) => {
+                console.log("REPTIL AGORA", reptil);
+
+                return (
+                  <Box
+                    key={reptil.id}
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <ReptileCard reptile={reptil} />
+                  </Box>
+                );
+              })}
             </Box>
           </Box>
         </Box>

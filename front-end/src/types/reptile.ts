@@ -1,6 +1,13 @@
-export type Habitat = "Solo" | "Árvores" | "Ambiente Aquático" | "Subsolo e Serrapilheira";
+export type Habitat =
+  | "Solo"
+  | "Árvores"
+  | "Ambiente Aquático"
+  | "Subsolo e Serrapilheira";
+
 export type PeriodoAtividade = "Diurno" | "Noturno";
+
 export type Conservacao = "POUCO PREOCUPANTE" | "VULNERÁVEL" | "QUASE AMEAÇADA";
+
 export type Dieta =
   | "Aracnídeos"
   | "Vegetais e Algas"
@@ -19,13 +26,13 @@ export interface Reptil {
   id: number;
   nomeCientifico: string;
   nomePopular: string;
-  habitat: Habitat[];
-  periodoAtividade: PeriodoAtividade[];
+  habitat: Habitat[]; // Array de habitats
+  periodoAtividade: PeriodoAtividade[]; // Array de períodos de atividade
   naturalidade: "Nativo" | "Exótico";
   conservacao: Conservacao;
-  perigo?: string|null;
+  perigo: string | null; // Pode ser null
   imagemContinente: string;
   imagemPrincipal: string;
-  imagemVariacao?: string|null;
-  dieta: Dieta[];
+  imagemVariacao: string | null; // Pode ser null
+  dieta: Dieta[]; // Array de dietas
 }

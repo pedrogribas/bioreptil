@@ -18,7 +18,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Reptil } from "../types/reptile";
 import { repteis } from "./../data/reptiles"; // Simulação de dados
@@ -29,8 +29,10 @@ const ReptileDetail: React.FC = () => {
   const theme = useTheme(); // Acessando o tema
   const isMobile = useMediaQuery(theme.breakpoints.down("sm")); // Detectando se é um dispositivo móvel
 
-  // Buscar o réptil pelo ID (simulação, em um caso real poderia vir de uma API)
   const reptile: Reptil | undefined = repteis.find((r) => r.id === Number(id));
+  useEffect(() => {
+    console.log("dados dos repteis", reptile);
+  }, [reptile]);
 
   if (!reptile) {
     return (
@@ -70,16 +72,10 @@ const ReptileDetail: React.FC = () => {
           backgroundColor: theme.palette.background.paper,
         }}
       >
-        <img
-          src={`front-end/src/public/assets/images/Reptiles/${reptile.imagemPrincipal}.jpg`}
-          alt="Grapefruit slice atop a pile of other slices"
-          width={300}
-          height={300}
-        />
         <CardMedia
           component="img"
           height={isMobile ? "250" : "350"}
-          image={`src/public/assets/images/Reptiles/${reptile.imagemPrincipal}.jpg`}
+          image={`./1.jpg`}
           alt={reptile.nomePopular}
           sx={{
             borderBottomLeftRadius: 2,

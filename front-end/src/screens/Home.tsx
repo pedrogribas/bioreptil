@@ -1,6 +1,7 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import React, { useEffect, useState } from "react";
+import { getRepteis } from "../api";
 import ReptileCard from "../components/ReptileCard";
 import {
   Conservacao,
@@ -10,12 +11,24 @@ import {
   Reptil,
 } from "../types/reptile";
 import Filters from "./../components/Filters";
-import { repteis } from "./../data/reptiles";
+import { repteis } from "../data/reptiles";
 
 const Home: React.FC = () => {
   const theme = useTheme(); // Acessando o tema
+  const [filteredrepteiss, setFilteredrepteiss] = useState<Reptil[]>();
 
-  const [filteredrepteiss, setFilteredrepteiss] = useState<Reptil[]>(repteis);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Buscar todos os répteis
+        const data = await getRepteis();
+        setFilteredrepteiss(data);
+      } catch (error) {
+        console.error("Erro ao buscar dados:", error);
+      }
+    };
+    fetchData();
+  }, []);
 
   const [selectedFilters, setSelectedFilters] = useState({
     dieta: [] as Dieta[],

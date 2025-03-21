@@ -65,15 +65,21 @@ const ReptileDetail: React.FC = () => {
         sx={{
           mt: 2,
           borderRadius: 2, // Bordas arredondadas
-          boxShadow: 3,
+          boxShaadow: 3,
           overflow: "hidden", // Esconde qualquer overflow de imagem
           backgroundColor: theme.palette.background.paper,
         }}
       >
+        <img
+          src={`front-end/src/public/assets/images/Reptiles/${reptile.imagemPrincipal}.jpg`}
+          alt="Grapefruit slice atop a pile of other slices"
+          width={300}
+          height={300}
+        />
         <CardMedia
           component="img"
           height={isMobile ? "250" : "350"}
-          image={`./../assets/images/Reptiles/${reptile.imagemPrincipal}`}
+          image={`src/public/assets/images/Reptiles/${reptile.imagemPrincipal}.jpg`}
           alt={reptile.nomePopular}
           sx={{
             borderBottomLeftRadius: 2,

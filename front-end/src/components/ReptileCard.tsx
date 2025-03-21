@@ -78,11 +78,11 @@ const ReptileCard: React.FC<ReptileCardProps> = ({ reptile }) => {
   const getConservacaoIcon = (status: Conservacao) => {
     switch (status) {
       case "POUCO PREOCUPANTE":
-        return "src/assets/images/Icons/pouco-preocupante.png";
+        return "src/public/assets/images/Icons/pouco-preocupante.png";
       case "QUASE AMEAÇADA":
-        return "src/assets/images/Icons/quase-ameacada.png";
+        return "src/public/assets/images/Icons/quase-ameacada.png";
       case "VULNERÁVEL":
-        return "src/assets/images/Icons/vulneravel.png";
+        return "src/public/assets/images/Icons/vulneravel.png";
       default:
         return null;
     }
@@ -90,26 +90,26 @@ const ReptileCard: React.FC<ReptileCardProps> = ({ reptile }) => {
 
   const getNaturalidadeIcon = (nat: "Nativo" | "Exótico") => {
     return nat === "Nativo"
-      ? "src/assets/images/Icons/nativo.png"
-      : "src/assets/images/Icons/exotico.png";
+      ? "src/public/assets/images/Icons/nativo.png"
+      : "src/public/assets/images/Icons/exotico.png";
   };
 
   const getPeriodoAtividadeIcon = (periodo: PeriodoAtividade) => {
     return periodo === "Diurno"
-      ? "src/assets/images/Icons/diurno.png"
-      : "src/assets/images/Icons/noturno.png";
+      ? "src/public/assets/images/Icons/diurno.png"
+      : "src/public/assets/images/Icons/noturno.png";
   };
 
   const getHabitatIcon = (hab: Habitat) => {
     switch (hab) {
       case "Solo":
-        return "src/assets/images/Icons/solo.png";
+        return "src/public/assets/images/Icons/solo.png";
       case "Árvores":
-        return "src/assets/images/Icons/arvores.png";
+        return "src/public/assets/images/Icons/arvores.png";
       case "Ambiente Aquático":
-        return "src/assets/images/Icons/aquatico.png";
+        return "src/public/assets/images/Icons/aquatico.png";
       case "Subsolo e Serrapilheira":
-        return "src/assets/images/Icons/subsolo.png";
+        return "src/public/assets/images/Icons/subsolo.png";
       default:
         return null;
     }
@@ -131,10 +131,9 @@ const ReptileCard: React.FC<ReptileCardProps> = ({ reptile }) => {
           {nomePopular}
         </Typography>
       </CardHeader>
-
       <CardMedia
         component="img"
-        image={`src/assets/images/Reptiles/${imagemPrincipal}.jpg`}
+        image={`src/public/assets/images/Reptiles/${imagemPrincipal}.jpg`}
         alt={nomePopular}
         sx={{ objectFit: "fill", height: 160 }}
       />
